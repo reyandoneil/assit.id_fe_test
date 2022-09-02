@@ -1,16 +1,32 @@
-import { CardActions, CardContent } from '@mui/material';
-import Card from '@mui/material/Card';
-
-function index({nama}) {
+import {
+  CustomCard,
+  TopContent,
+  BottomContent,
+  TopButtonWrapper,
+  ProfileWrapper,
+  Avatar,
+  Name,
+  OutlinedButton
+} from './EmployeCardElements'
+import avtr from '../../Assets/avtr.svg'
+function index({ nama }) {
   return (
     <>
-      <Card sx={{ maxWidth: 250}}>
-        <CardActions>
-          <CardContent>
-            <span>{nama}</span>
-          </CardContent>
-        </CardActions>
-      </Card>
+      <CustomCard>
+        <TopContent>
+          <TopButtonWrapper>
+            <OutlinedButton variant='outlined' disableRipple cn='edit'>Edit</OutlinedButton>
+            <OutlinedButton variant='outlined' disableRipple cn='delete'>Delete</OutlinedButton>
+          </TopButtonWrapper>
+          <ProfileWrapper>
+            <Avatar src={avtr} />
+            <Name>{nama}</Name>
+          </ProfileWrapper>
+        </TopContent>
+        <BottomContent>
+          Bottom
+        </BottomContent>
+      </CustomCard>
     </>
   );
 }

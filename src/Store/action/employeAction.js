@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { GET_EMPLOYEE, IS_LOADING } from './index';
-const employeeApi =
-  'https://61601920faa03600179fb8d2.mockapi.io/pegawai';
+const employeeApi = 'https://61601920faa03600179fb8d2.mockapi.io/pegawai';
 
 export const isLoading = (payload) => {
   return {
@@ -13,7 +12,6 @@ export const isLoading = (payload) => {
 export const getAllEmployee = () => {
   return async (dispatch) => {
     const onSuccess = (employee) => {
-      console.log(employee.data);
       dispatch(isLoading(false));
       dispatch({
         type: GET_EMPLOYEE,
@@ -29,3 +27,80 @@ export const getAllEmployee = () => {
     }
   };
 };
+
+
+
+export const addEmployee = () => {
+  return async (dispatch) => {
+    const onSuccess = (employee) => {
+      dispatch(isLoading(false));
+      dispatch({
+        type: GET_EMPLOYEE,
+        payload: employee.data,
+      });
+    };
+    try {
+      dispatch(isLoading(true));
+      const getDataEmployee = await axios.get(employeeApi);
+      return onSuccess(getDataEmployee);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+}
+
+
+export const deleteEmployee = (employeeId) => {
+  return async (dispatch) => {
+    const onSuccess = (deleteEmployee) => {
+      dispatch(getAllEmployee())
+      dispatch(isLoading(false));
+    };
+    try {
+      dispatch(isLoading(true));
+      const deleteEmployee = await axios.delete(`${employeeApi}/${employeeId}`);
+      return onSuccess(deleteEmployee);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+}
+
+export const updateEmployee = (dataEmployee) => {
+  const {
+    id,
+    nama,
+    provinsi,
+    kabupaten,
+    kecamatan,
+    kelurahan
+  } = dataEmployee
+  return async (dispatch) => {
+    const onSuccess = (employee) => {
+      dispatch(getAllEmployee())
+
+      dispatch({
+        type: GET_EMPLOYEE,
+        payload: employee.data,
+      });
+    };
+    try {
+      dispatch(isLoading(true));
+      const updateEmployee = await axios.put(`${employeeApi}/${id}`, {
+        headers: {},
+        id,
+        nama,
+        provinsi,
+        kabupaten,
+        kecamatan,
+        kelurahan
+
+      });
+      return onSuccess(updateEmployee);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+}
