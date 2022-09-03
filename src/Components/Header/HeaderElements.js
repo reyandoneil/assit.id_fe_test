@@ -9,6 +9,21 @@ export const HeaderContainer = styled('div')`
   top: 0;
   z-index: 3;
 `;
-export const CustomButton = styled(Button)``;
+export const CustomButton = styled(Button)`
+
+${(props) => {
+    if (props.cn === 'addEmployee') {
+      return `
+        color: white ;
+        border-color:white ;
+        :hover{
+            color: white ;
+            background-color :#C1DCCA ;
+            border-color:#8CA494 ;
+        }
+        `;
+    } 
+  }}
+`;
 
 

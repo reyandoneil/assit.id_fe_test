@@ -4,6 +4,7 @@ import {
   IS_LOADING,
   IS_MODAL,
   MODAL_NAME,
+  DATA_EDIT
 } from './index';
 const employeeApi =
   'https://61601920faa03600179fb8d2.mockapi.io/pegawai';
@@ -28,6 +29,13 @@ export const modalName = (payload) => {
   };
 };
 
+export const dataEdit = (payload) => {
+  return {
+    type: DATA_EDIT,
+    payload
+  }
+}
+
 export const getAllEmployee = () => {
   return async (dispatch) => {
     const onSuccess = (employee) => {
@@ -39,7 +47,7 @@ export const getAllEmployee = () => {
     };
     try {
       dispatch(isLoading(true));
-      const getDataEmployee = await axios.get(employeeApi);
+      const getDataEmployee = await axios.get('https://61601920faa03600179fb8d2.mockapi.io/pegawai');
       return onSuccess(getDataEmployee);
     } catch (error) {
       console.error(error);
@@ -47,18 +55,29 @@ export const getAllEmployee = () => {
   };
 };
 
-export const addEmployee = () => {
+export const addEmployee = (data) => {
   return async (dispatch) => {
+    const {
+      nama,
+      provinsi,
+      kabupaten,
+      kecamatan,
+      kelurahan
+    } = data
     const onSuccess = (employee) => {
+
+      dispatch(getAllEmployee())
       dispatch(isLoading(false));
-      dispatch({
-        type: GET_EMPLOYEE,
-        payload: employee.data,
-      });
     };
     try {
       dispatch(isLoading(true));
-      const getDataEmployee = await axios.get(employeeApi);
+      const getDataEmployee = await axios.post('https://61601920faa03600179fb8d2.mockapi.io/pegawai', {
+        nama,
+        provinsi,
+        kabupaten,
+        kecamatan,
+        kelurahan
+      });
       return onSuccess(getDataEmployee);
     } catch (error) {
       console.error(error);
@@ -76,8 +95,8 @@ export const deleteEmployee = (employeeId) => {
       dispatch(isLoading(true));
       const deleteEmployee = await axios.delete(
         `${employeeApi}/${employeeId}`
-      );
-      return onSuccess(deleteEmployee);
+        );
+        return onSuccess(deleteEmployee);
     } catch (error) {
       console.error(error);
     }
@@ -90,17 +109,11 @@ export const updateEmployee = (dataEmployee) => {
   return async (dispatch) => {
     const onSuccess = (employee) => {
       dispatch(getAllEmployee());
-
-      dispatch({
-        type: GET_EMPLOYEE,
-        payload: employee.data,
-      });
+      dispatch(isLoading(false));
     };
     try {
       dispatch(isLoading(true));
       const updateEmployee = await axios.put(`${employeeApi}/${id}`, {
-        headers: {},
-        id,
         nama,
         provinsi,
         kabupaten,

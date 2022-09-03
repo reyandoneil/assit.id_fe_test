@@ -10,11 +10,13 @@ export const BottomContent = styled('div')`
   padding: 10px;
   border-radius: 4px;
   background-color: #d8e6dd;
+  display:flex;
+  flex-direction:column ;
 `;
 
 export const CustomCard = styled(Card)`
-  height: 350px;
-  width: 270px;
+  height: 500px;
+  width: 300px;
   padding: 10px;
   cursor: pointer;
   :hover {
@@ -76,3 +78,11 @@ export const OutlinedButton = styled(Button)`
     }
   }}
 `;
+
+export const Title = styled('span')` 
+  color:gray ;
+`
+
+export const Content = styled('span')` 
+font-weight: 600 ;
+`

@@ -3,6 +3,7 @@ const initialState = {
   isLoading: false,
   isModal: false,
   modalName: '',
+  dataEditEmployee: []
 };
 
 function Reducer(state = initialState, { type, payload }) {
@@ -15,6 +16,8 @@ function Reducer(state = initialState, { type, payload }) {
       return { ...state, isModal: payload };
     case 'MODAL_NAME':
       return { ...state, modalName: payload };
+    case 'DATA_EDIT':
+      return { ...state, dataEditEmployee: payload };
     default:
       return state;
   }

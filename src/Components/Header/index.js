@@ -11,7 +11,12 @@ function Header() {
   return (
     <>
       <HeaderContainer>
-        <CustomButton onClick={openModal}>Add employee</CustomButton>
+        <CustomButton
+          variant="outlined"
+          disableRipple cn={'addEmployee'}
+          onClick={openModal}>
+          Add employee
+        </CustomButton>
       </HeaderContainer>
       ;
     </>

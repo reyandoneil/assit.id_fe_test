@@ -5,32 +5,50 @@ import { CardEmployee, Header, Modal } from '../../Components';
 import {
   EmployeePageContainer,
   MainContainer,
+  LoadingContainer
 } from './EmployeePageElements';
 import { Container } from '@mui/material';
 
 function EmployeePage() {
   const dispatch = useDispatch();
   const dataEmployee = useSelector(
-    (state) => state.employeeReducer.dataEmployee
+    (state) => state?.employeeReducer?.dataEmployee
+  );
+
+  const isLoading = useSelector(
+    (state) => state?.employeeReducer?.isLoading
   );
 
   useEffect(() => {
     dispatch(getAllEmployee());
   }, [dispatch]);
+
   return (
     <MainContainer>
       <Header />
       <Container>
         <EmployeePageContainer>
-          {dataEmployee.map((employee, i) => {
-            return (
-              <CardEmployee
-                nama={employee.nama}
-                id={employee.id}
-                key={i}
-              />
-            );
-          })}
+          {isLoading ?
+            <LoadingContainer>
+              <span>loading..</span>
+            </LoadingContainer>
+            :
+            <>
+              {dataEmployee.map((employee, i) => {
+                return (
+                  <CardEmployee
+                    nama={employee.nama}
+                    provinsi={employee.provinsi}
+                    kabupaten={employee.kabupaten}
+                    kecamatan={employee.kecamatan}
+                    kelurahan={employee.kelurahan}
+                    id={employee.id}
+                    key={i}
+                  />
+                );
+              })}
+            </>
+          }
         </EmployeePageContainer>
       </Container>
       <Modal />

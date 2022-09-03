@@ -7,49 +7,65 @@ import {
   Avatar,
   Name,
   OutlinedButton,
+  Title,
+  Content
 } from './EmployeCardElements';
 import { useDispatch } from 'react-redux';
-import { modal, modalName } from '../../Store/action/employeAction';
+import { modal, modalName, dataEdit, deleteEmployee } from '../../Store/action/employeAction';
 
-function EmployeeCard({ nama, id }) {
+function EmployeeCard({ nama, id, provinsi, kabupaten, kecamatan, kelurahan }) {
   const dispatch = useDispatch();
-  const deleteEmployee = () => {};
+  const deleteEmployeeHandler = (e) => {
+    e.preventDefault();
+    dispatch(deleteEmployee(id))
+  };
   const editEmployee = () => {
+    dispatch(dataEdit({
+      nama, id, provinsi, kabupaten, kecamatan, kelurahan
+    }))
     dispatch(modal(true));
     dispatch(modalName('editEmployee'));
   };
   return (
-    <>
-      <CustomCard>
-        <TopContent>
-          <TopButtonWrapper>
-            <OutlinedButton
-              variant="outlined"
-              disableRipple
-              cn="edit"
-              onClick={editEmployee}
-            >
-              Edit
-            </OutlinedButton>
-            <OutlinedButton
-              variant="outlined"
-              disableRipple
-              cn="delete"
-              onClick={deleteEmployee}
-            >
-              Delete
-            </OutlinedButton>
-          </TopButtonWrapper>
-          <ProfileWrapper>
-            <Avatar
-              src={`https://avatars.dicebear.com/api/personas/${id}.svg`}
-            />
-            <Name>{nama}</Name>
-          </ProfileWrapper>
-        </TopContent>
-        <BottomContent>Bottom</BottomContent>
-      </CustomCard>
-    </>
+
+    <CustomCard>
+      <TopContent>
+        <TopButtonWrapper>
+          <OutlinedButton
+            variant="outlined"
+            disableRipple
+            cn="edit"
+            onClick={editEmployee}
+          >
+            Edit
+          </OutlinedButton>
+          <OutlinedButton
+            variant="outlined"
+            disableRipple
+            cn="delete"
+            onClick={deleteEmployeeHandler}
+          >
+            Delete
+          </OutlinedButton>
+        </TopButtonWrapper>
+        <ProfileWrapper>
+          <Avatar
+            src={`https://avatars.dicebear.com/api/personas/${id}.svg`}
+          />
+          <Name>{nama}</Name>
+        </ProfileWrapper>
+      </TopContent>
+      <BottomContent>
+        <Title>Provinsi</Title>
+        <Content>{provinsi}</Content>
+        <Title>Kabupaten/Kota</Title>
+        <Content>{kabupaten}</Content>
+        <Title>Kecamatan</Title>
+        <Content>{kecamatan}</Content>
+        <Title>Kelurahan</Title>
+        <Content>{kelurahan}</Content>
+      </BottomContent>
+    </CustomCard>
   );
 }
 
