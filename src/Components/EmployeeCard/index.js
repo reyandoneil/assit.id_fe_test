@@ -6,29 +6,51 @@ import {
   ProfileWrapper,
   Avatar,
   Name,
-  OutlinedButton
-} from './EmployeCardElements'
-import avtr from '../../Assets/avtr.svg'
-function index({ nama }) {
+  OutlinedButton,
+} from './EmployeCardElements';
+import { useDispatch } from 'react-redux';
+import { modal, modalName } from '../../Store/action/employeAction';
+
+function EmployeeCard({ nama, id }) {
+  const dispatch = useDispatch();
+  const deleteEmployee = () => {};
+  const editEmployee = () => {
+    dispatch(modal(true));
+    dispatch(modalName('editEmployee'));
+  };
   return (
     <>
       <CustomCard>
         <TopContent>
           <TopButtonWrapper>
-            <OutlinedButton variant='outlined' disableRipple cn='edit'>Edit</OutlinedButton>
-            <OutlinedButton variant='outlined' disableRipple cn='delete'>Delete</OutlinedButton>
+            <OutlinedButton
+              variant="outlined"
+              disableRipple
+              cn="edit"
+              onClick={editEmployee}
+            >
+              Edit
+            </OutlinedButton>
+            <OutlinedButton
+              variant="outlined"
+              disableRipple
+              cn="delete"
+              onClick={deleteEmployee}
+            >
+              Delete
+            </OutlinedButton>
           </TopButtonWrapper>
           <ProfileWrapper>
-            <Avatar src={avtr} />
+            <Avatar
+              src={`https://avatars.dicebear.com/api/personas/${id}.svg`}
+            />
             <Name>{nama}</Name>
           </ProfileWrapper>
         </TopContent>
-        <BottomContent>
-          Bottom
-        </BottomContent>
+        <BottomContent>Bottom</BottomContent>
       </CustomCard>
     </>
   );
 }
 
-export default index;
+export default EmployeeCard;

@@ -1,10 +1,29 @@
 import axios from 'axios';
-import { GET_EMPLOYEE, IS_LOADING } from './index';
-const employeeApi = 'https://61601920faa03600179fb8d2.mockapi.io/pegawai';
+import {
+  GET_EMPLOYEE,
+  IS_LOADING,
+  IS_MODAL,
+  MODAL_NAME,
+} from './index';
+const employeeApi =
+  'https://61601920faa03600179fb8d2.mockapi.io/pegawai';
 
 export const isLoading = (payload) => {
   return {
     type: IS_LOADING,
+    payload,
+  };
+};
+
+export const modal = (payload) => {
+  return {
+    type: IS_MODAL,
+    payload,
+  };
+};
+export const modalName = (payload) => {
+  return {
+    type: MODAL_NAME,
     payload,
   };
 };
@@ -28,8 +47,6 @@ export const getAllEmployee = () => {
   };
 };
 
-
-
 export const addEmployee = () => {
   return async (dispatch) => {
     const onSuccess = (employee) => {
@@ -47,38 +64,32 @@ export const addEmployee = () => {
       console.error(error);
     }
   };
-}
-
+};
 
 export const deleteEmployee = (employeeId) => {
   return async (dispatch) => {
     const onSuccess = (deleteEmployee) => {
-      dispatch(getAllEmployee())
+      dispatch(getAllEmployee());
       dispatch(isLoading(false));
     };
     try {
       dispatch(isLoading(true));
-      const deleteEmployee = await axios.delete(`${employeeApi}/${employeeId}`);
+      const deleteEmployee = await axios.delete(
+        `${employeeApi}/${employeeId}`
+      );
       return onSuccess(deleteEmployee);
     } catch (error) {
       console.error(error);
     }
   };
-
-}
+};
 
 export const updateEmployee = (dataEmployee) => {
-  const {
-    id,
-    nama,
-    provinsi,
-    kabupaten,
-    kecamatan,
-    kelurahan
-  } = dataEmployee
+  const { id, nama, provinsi, kabupaten, kecamatan, kelurahan } =
+    dataEmployee;
   return async (dispatch) => {
     const onSuccess = (employee) => {
-      dispatch(getAllEmployee())
+      dispatch(getAllEmployee());
 
       dispatch({
         type: GET_EMPLOYEE,
@@ -94,13 +105,11 @@ export const updateEmployee = (dataEmployee) => {
         provinsi,
         kabupaten,
         kecamatan,
-        kelurahan
-
+        kelurahan,
       });
       return onSuccess(updateEmployee);
     } catch (error) {
       console.error(error);
     }
   };
-
-}
+};

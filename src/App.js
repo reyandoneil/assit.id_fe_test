@@ -1,4 +1,5 @@
-import { EmployeePage } from './Page'
+import { EmployeePage } from './Page';
+
 function App() {
   return (
     <>
