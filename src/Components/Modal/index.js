@@ -1,6 +1,15 @@
-import { Modal, TextField, Autocomplete, FormControl, InputLabel, Select, OutlinedInput, MenuItem } from '@mui/material';
+import {
+  Modal,
+  TextField,
+  Autocomplete,
+  FormControl,
+  InputLabel,
+  Select,
+  OutlinedInput,
+  MenuItem,
+} from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { ModalContainer, OutlinedButton } from './ModalElements';
+import { ModalContainer, OutlinedButton, TitleWrapper } from './ModalElements';
 import { modal, modalName, addEmployee, updateEmployee } from '../../Store/action/employeAction';
 import { getProvinsi, getKota, getKecamatan, getKelurahan } from '../../Store/action/othApi';
 import { useEffect, useState } from 'react';
@@ -102,6 +111,7 @@ function ModalComponent() {
   };
 
   const createEmployeeHandler = (e) => {
+    console.log('masuk');
     e.preventDefault();
     dispatch(addEmployee(addEmployeeValue))
     dispatch(modal(false))
@@ -118,8 +128,14 @@ function ModalComponent() {
       return (
         <>
           <Modal open={isModal} onClose={closeModal}>
-            <ModalContainer>
-              Add Employee
+            <ModalContainer
+              className={'form_Add'}
+              onSubmit={createEmployeeHandler}
+              autoComplete="off"
+            >
+              <TitleWrapper>
+                Add Employee
+              </TitleWrapper>
               <TextField
                 fullWidth
                 id="nama"
@@ -128,6 +144,7 @@ function ModalComponent() {
                 variant="outlined"
                 onChange={onChangeHandler}
                 style={{ marginBottom: '30px' }}
+                required={true}
               />
               <Autocomplete
                 id='provinsi'
@@ -139,12 +156,14 @@ function ModalComponent() {
                 }
                 getOptionLabel={(option) => option.nama}
                 onChange={provinsiChangeHandler}
+
                 renderInput={(params) => {
                   return (
                     <TextField
                       {...params}
                       label="provinsi"
                       variant="outlined"
+                      required
                     />
                   );
                 }}
@@ -158,6 +177,7 @@ function ModalComponent() {
                   input={<OutlinedInput label="Kota/Kabupaten" />}
                   onChange={kota_kabupatenChangeHandler}
                   value={addEmployeeValue.kabupaten}
+                  required
                 >
                   {kota_kabupaten.map((data) => (
                     <MenuItem
@@ -179,6 +199,7 @@ function ModalComponent() {
                   input={<OutlinedInput label="kecamatan" />}
                   onChange={kecamatanChangeHandler}
                   value={addEmployeeValue.kecamatan}
+                  required
                 // MenuProps={MenuProps}
                 >
                   {kecamatan.map((data) => (
@@ -201,6 +222,7 @@ function ModalComponent() {
                   input={<OutlinedInput label="kelurahan" />}
                   onChange={kelurahanChangeHandler}
                   value={addEmployeeValue.kelurahan}
+                  required
                 // MenuProps={MenuProps}
                 >
                   {kelurahan.map((data) => (
@@ -218,7 +240,7 @@ function ModalComponent() {
                 variant="outlined"
                 disableRipple
                 cn="edit"
-                onClick={createEmployeeHandler}
+                type='submit'
               >
                 Submit
               </OutlinedButton>
@@ -232,7 +254,9 @@ function ModalComponent() {
         <>
           <Modal open={isModal} onClose={closeModal}>
             <ModalContainer>
-              Edit Data Employee
+              <TitleWrapper>
+                Edit Data Employee
+              </TitleWrapper>
               <TextField
                 fullWidth
                 id="nama"
@@ -272,7 +296,7 @@ function ModalComponent() {
                   input={<OutlinedInput label="Kota/Kabupaten" />}
                   onChange={editKota_kabupatenChangeHandler}
                   defaultValue=""
-                  // value={edit?.kabupaten?.length ? edit?.kabupaten : ''}
+                // value={edit?.kabupaten?.length ? edit?.kabupaten : ''}
                 // MenuProps={MenuProps}
 
                 >
@@ -347,6 +371,12 @@ function ModalComponent() {
 
       );
 
+    case 'delateEmployee':
+      return (
+        <Modal>
+          ini delete modal
+        </Modal>
+      )
     default:
       <></>;
   }

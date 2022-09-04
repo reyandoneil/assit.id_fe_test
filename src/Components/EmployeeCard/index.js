@@ -12,9 +12,11 @@ import {
 } from './EmployeCardElements';
 import { useDispatch } from 'react-redux';
 import { modal, modalName, dataEdit, deleteEmployee } from '../../Store/action/employeAction';
+import {firstCapital} from '../../helper'
 
 function EmployeeCard({ nama, id, provinsi, kabupaten, kecamatan, kelurahan }) {
   const dispatch = useDispatch();
+  const imageSource = `https://avatars.dicebear.com/api/personas/${id}.svg`
   const deleteEmployeeHandler = (e) => {
     e.preventDefault();
     dispatch(deleteEmployee(id))
@@ -50,9 +52,9 @@ function EmployeeCard({ nama, id, provinsi, kabupaten, kecamatan, kelurahan }) {
         </TopButtonWrapper>
         <ProfileWrapper>
           <Avatar
-            src={`https://avatars.dicebear.com/api/personas/${id}.svg`}
+            src={imageSource}
           />
-          <Name>{nama}</Name>
+          <Name>{firstCapital(nama)}</Name>
         </ProfileWrapper>
       </TopContent>
       <BottomContent>

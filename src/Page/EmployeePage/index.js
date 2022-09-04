@@ -15,6 +15,9 @@ function EmployeePage() {
     (state) => state?.employeeReducer?.dataEmployee
   );
 
+  const reverseDataEmployee = [...dataEmployee].reverse()
+  console.log(typeof (reverseDataEmployee), reverseDataEmployee);
+
   const isLoading = useSelector(
     (state) => state?.employeeReducer?.isLoading
   );
@@ -34,7 +37,7 @@ function EmployeePage() {
             </LoadingContainer>
             :
             <>
-              {dataEmployee.map((employee, i) => {
+              {reverseDataEmployee.map((employee, i) => {
                 return (
                   <CardEmployee
                     nama={employee.nama}

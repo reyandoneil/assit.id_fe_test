@@ -81,8 +81,10 @@ export const OutlinedButton = styled(Button)`
 
 export const Title = styled('span')` 
   color:gray ;
+  font-size:0.8rem ;
 `
 
 export const Content = styled('span')` 
 font-weight: 600 ;
+margin-bottom: 5px ;
 `

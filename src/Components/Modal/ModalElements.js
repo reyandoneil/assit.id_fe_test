@@ -1,6 +1,6 @@
 import { styled, Button } from '@mui/material';
 
-export const ModalContainer = styled('div')`
+export const ModalContainer = styled('form')`
   position: absolute;
   top: 50%;
   left: 50%;
@@ -17,6 +17,8 @@ export const ModalContainer = styled('div')`
 
 
 export const OutlinedButton = styled(Button)`
+width:100% ;
+margin-bottom: 30px ;
   ${(props) => {
     if (props.cn === 'edit') {
       return `
@@ -41,3 +43,16 @@ export const OutlinedButton = styled(Button)`
     }
   }}
 `;
+
+export const TitleWrapper =styled('div')` 
+width:100% ;
+height: 60px ;
+display: flex;
+justify-content: center;
+align-items: center ;
+font-size: 2rem ;
+font-weight: 600 ;
+margin-bottom: 20px ;
+color:#FE6D90 ;
+
+`
