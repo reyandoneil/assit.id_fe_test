@@ -44,7 +44,7 @@ export const CustomButton = styled(Button)`
 `;
 
 export const MessageWrapper = styled('div')`
-  height: 100%;
+  height:50%;
   width: 300px;
   background-color: white;
   display: block;
@@ -53,4 +53,6 @@ export const MessageWrapper = styled('div')`
   align-items: center;
   color: #8ca494;
   animation: ${slideInLeft} 0.2s forwards;
+  z-index: 10 ;
+  position: absolute;
 `;
