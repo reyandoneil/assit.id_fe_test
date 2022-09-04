@@ -144,6 +144,7 @@ function ModalComponent() {
   const createEmployeeHandler = (e) => {
     e.preventDefault();
     dispatch(addEmployee(addEmployeeValue));
+    setAddEmployeeValue(employeeInitialState);
     dispatch(modal(false));
   };
 
