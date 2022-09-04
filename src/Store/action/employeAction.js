@@ -4,7 +4,9 @@ import {
   IS_LOADING,
   IS_MODAL,
   MODAL_NAME,
-  DATA_EDIT
+  DATA_EDIT,
+  IS_MESSAGE,
+  MESSAGE,
 } from './index';
 const employeeApi =
   'https://61601920faa03600179fb8d2.mockapi.io/pegawai';
@@ -22,6 +24,25 @@ export const modal = (payload) => {
     payload,
   };
 };
+
+export const isMessage = (payload) => {
+  return {
+    type: IS_MESSAGE,
+    payload,
+  };
+};
+
+export const message = (payload) => {
+  return {
+    type: MESSAGE,
+    payload,
+  };
+};
+
+export const isDelate = (payload) => {
+  
+}
+
 export const modalName = (payload) => {
   return {
     type: MODAL_NAME,
@@ -32,9 +53,9 @@ export const modalName = (payload) => {
 export const dataEdit = (payload) => {
   return {
     type: DATA_EDIT,
-    payload
-  }
-}
+    payload,
+  };
+};
 
 export const getAllEmployee = () => {
   return async (dispatch) => {
@@ -47,7 +68,9 @@ export const getAllEmployee = () => {
     };
     try {
       dispatch(isLoading(true));
-      const getDataEmployee = await axios.get('https://61601920faa03600179fb8d2.mockapi.io/pegawai');
+      const getDataEmployee = await axios.get(
+        'https://61601920faa03600179fb8d2.mockapi.io/pegawai'
+      );
       return onSuccess(getDataEmployee);
     } catch (error) {
       console.error(error);
@@ -57,29 +80,29 @@ export const getAllEmployee = () => {
 
 export const addEmployee = (data) => {
   return async (dispatch) => {
-    const {
-      nama,
-      provinsi,
-      kabupaten,
-      kecamatan,
-      kelurahan
-    } = data
+    const { nama, provinsi, kabupaten, kecamatan, kelurahan } = data;
     const onSuccess = (employee) => {
-
-      dispatch(getAllEmployee())
+      dispatch(getAllEmployee());
       dispatch(isLoading(false));
+      dispatch(isMessage(true))
+      dispatch(message('Success add employee to db'))
     };
     try {
       dispatch(isLoading(true));
-      const getDataEmployee = await axios.post('https://61601920faa03600179fb8d2.mockapi.io/pegawai', {
-        nama,
-        provinsi,
-        kabupaten,
-        kecamatan,
-        kelurahan
-      });
+      const getDataEmployee = await axios.post(
+        'https://61601920faa03600179fb8d2.mockapi.io/pegawai',
+        {
+          nama,
+          provinsi,
+          kabupaten,
+          kecamatan,
+          kelurahan,
+        }
+      );
       return onSuccess(getDataEmployee);
     } catch (error) {
+      dispatch(isMessage(true))
+      dispatch(message('Error add employee to db'))
       console.error(error);
     }
   };
@@ -90,15 +113,19 @@ export const deleteEmployee = (employeeId) => {
     const onSuccess = (deleteEmployee) => {
       dispatch(getAllEmployee());
       dispatch(isLoading(false));
+      dispatch(isMessage(true))
+      dispatch(message('Success delete employee from db'))
     };
     try {
       dispatch(isLoading(true));
       const deleteEmployee = await axios.delete(
         `${employeeApi}/${employeeId}`
-        );
-        return onSuccess(deleteEmployee);
+      );
+      return onSuccess(deleteEmployee);
     } catch (error) {
       console.error(error);
+      dispatch(isMessage(true))
+      dispatch(message('Error delete employee from db'))
     }
   };
 };
@@ -110,6 +137,8 @@ export const updateEmployee = (dataEmployee) => {
     const onSuccess = (employee) => {
       dispatch(getAllEmployee());
       dispatch(isLoading(false));
+      dispatch(isMessage(true))
+      dispatch(message('Success update employee from db'))
     };
     try {
       dispatch(isLoading(true));
@@ -123,6 +152,8 @@ export const updateEmployee = (dataEmployee) => {
       return onSuccess(updateEmployee);
     } catch (error) {
       console.error(error);
+      dispatch(isMessage(true))
+      dispatch(message('Error update employee from db'))
     }
   };
 };

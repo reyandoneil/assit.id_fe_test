@@ -9,9 +9,27 @@ import {
   MenuItem,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { ModalContainer, OutlinedButton, TitleWrapper } from './ModalElements';
-import { modal, modalName, addEmployee, updateEmployee } from '../../Store/action/employeAction';
-import { getProvinsi, getKota, getKecamatan, getKelurahan } from '../../Store/action/othApi';
+import {
+  ModalContainer,
+  OutlinedButton,
+  TitleWrapper,
+  DelateModalContainer,
+  WarningMessage,
+  Name,
+} from './ModalElements';
+import {
+  modal,
+  modalName,
+  addEmployee,
+  updateEmployee,
+  deleteEmployee,
+} from '../../Store/action/employeAction';
+import {
+  getProvinsi,
+  getKota,
+  getKecamatan,
+  getKelurahan,
+} from '../../Store/action/othApi';
 import { useEffect, useState } from 'react';
 
 function ModalComponent() {
@@ -22,10 +40,11 @@ function ModalComponent() {
     kabupaten: '',
     kecamatan: '',
     kelurahan: '',
-  }
+  };
 
-
-  const [addEmployeeValue, setAddEmployeeValue] = useState(employeeInitialState)
+  const [addEmployeeValue, setAddEmployeeValue] = useState(
+    employeeInitialState
+  );
 
   const isModal = useSelector(
     (state) => state.employeeReducer.isModal
@@ -36,74 +55,86 @@ function ModalComponent() {
   );
 
   const provinsi = useSelector((state) => state?.oth?.dataProvinsi);
-  const kota_kabupaten = useSelector((state) => state?.oth?.dataKota_kabupaten);
+  const kota_kabupaten = useSelector(
+    (state) => state?.oth?.dataKota_kabupaten
+  );
   const kecamatan = useSelector((state) => state?.oth?.dataKecamatan);
   const kelurahan = useSelector((state) => state?.oth.dataKelurahan);
-  const dataEdit = useSelector((state) => state?.employeeReducer?.dataEditEmployee)
+  const dataEdit = useSelector(
+    (state) => state?.employeeReducer?.dataEditEmployee
+  );
   const [kota, setKota] = useState(0);
 
-  const [edit, setEdit] = useState()
-
+  const [edit, setEdit] = useState();
 
   useEffect(() => {
-    setEdit(dataEdit)
-  }, [dataEdit])
+    setEdit(dataEdit);
+  }, [dataEdit]);
 
   useEffect(() => {
     dispatch(getProvinsi());
     dispatch(getKota(kota));
-
   }, [dispatch, kota]);
 
   const provinsiChangeHandler = (e, value) => {
     setKota(value.id);
-    setAddEmployeeValue({ ...addEmployeeValue, 'provinsi': value.nama });
+    setAddEmployeeValue({
+      ...addEmployeeValue,
+      provinsi: value.nama,
+    });
   };
 
   const kota_kabupatenChangeHandler = (e, value) => {
-    dispatch(getKecamatan(value.props.id))
-    setAddEmployeeValue({ ...addEmployeeValue, 'kabupaten': value.props.value });
-  }
+    dispatch(getKecamatan(value.props.id));
+    setAddEmployeeValue({
+      ...addEmployeeValue,
+      kabupaten: value.props.value,
+    });
+  };
 
   const kecamatanChangeHandler = (e, value) => {
-    dispatch(getKelurahan(value.props.id))
-    setAddEmployeeValue({ ...addEmployeeValue, 'kecamatan': value.props.value });
-  }
+    dispatch(getKelurahan(value.props.id));
+    setAddEmployeeValue({
+      ...addEmployeeValue,
+      kecamatan: value.props.value,
+    });
+  };
 
   const kelurahanChangeHandler = (e, value) => {
-    setAddEmployeeValue({ ...addEmployeeValue, 'kelurahan': value.props.value });
-  }
+    setAddEmployeeValue({
+      ...addEmployeeValue,
+      kelurahan: value.props.value,
+    });
+  };
 
   const onChangeHandler = (e) => {
-    const { value } = e.target
-    setAddEmployeeValue({ ...addEmployeeValue, 'nama': value })
-  }
-
-
+    const { value } = e.target;
+    setAddEmployeeValue({ ...addEmployeeValue, nama: value });
+  };
 
   const editProvinsiChangeHandler = (e, value) => {
     setKota(value.id);
-    setEdit({ ...edit, 'provinsi': value.nama });
+    setEdit({ ...edit, provinsi: value.nama });
   };
 
   const editKota_kabupatenChangeHandler = (e, value) => {
-    dispatch(getKecamatan(value.props.id))
-    setEdit({ ...edit, 'kabupaten': value.props.value });
-  }
+    dispatch(getKecamatan(value.props.id));
+    setEdit({ ...edit, kabupaten: value.props.value });
+  };
 
   const editKecamatanChangeHandler = (e, value) => {
-    dispatch(getKelurahan(value.props.id))
-    setEdit({ ...edit, 'kecamatan': value.props.value });
-  }
+    dispatch(getKelurahan(value.props.id));
+    setEdit({ ...edit, kecamatan: value.props.value });
+  };
 
   const editKelurahanChangeHandler = (e, value) => {
-    setEdit({ ...edit, 'kelurahan': value.props.value });
-  }
+    setEdit({ ...edit, kelurahan: value.props.value });
+  };
 
   const editOnChangeHandler = (e) => {
-    const { value } = e.target
-    setEdit({ ...edit, 'nama': value })
-  }
+    const { value } = e.target;
+    setEdit({ ...edit, nama: value });
+  };
 
   const closeModal = () => {
     dispatch(modal(false));
@@ -111,19 +142,44 @@ function ModalComponent() {
   };
 
   const createEmployeeHandler = (e) => {
-    console.log('masuk');
     e.preventDefault();
-    dispatch(addEmployee(addEmployeeValue))
-    dispatch(modal(false))
-  }
+    dispatch(addEmployee(addEmployeeValue));
+    dispatch(modal(false));
+  };
 
   const editEmployeeHandler = (e) => {
     e.preventDefault();
-    dispatch(updateEmployee(edit))
-    dispatch(modal(false))
-  }
+    dispatch(updateEmployee(edit));
+    dispatch(modal(false));
+  };
+
+  const delateEmployeeById = (e) => {
+    e.preventDefault();
+    dispatch(modal(false));
+    dispatch(deleteEmployee(dataEdit.id));
+  };
 
   switch (name) {
+    case 'delateEmployee':
+      return (
+        <Modal open={isModal} onClose={closeModal}>
+          <DelateModalContainer>
+            <WarningMessage>
+              Are you sure that you want to permanently remove
+              <Name> {dataEdit.nama} </Name> from database??
+            </WarningMessage>
+            <OutlinedButton
+              variant="outlined"
+              disableRipple
+              cn="delete"
+              type="submit"
+              onClick={delateEmployeeById}
+            >
+              Ok
+            </OutlinedButton>
+          </DelateModalContainer>
+        </Modal>
+      );
     case 'addEmployee':
       return (
         <>
@@ -133,9 +189,7 @@ function ModalComponent() {
               onSubmit={createEmployeeHandler}
               autoComplete="off"
             >
-              <TitleWrapper>
-                Add Employee
-              </TitleWrapper>
+              <TitleWrapper>Add Employee</TitleWrapper>
               <TextField
                 fullWidth
                 id="nama"
@@ -147,7 +201,7 @@ function ModalComponent() {
                 required={true}
               />
               <Autocomplete
-                id='provinsi'
+                id="provinsi"
                 fullWidth
                 style={{ marginBottom: '30px' }}
                 options={provinsi}
@@ -156,7 +210,6 @@ function ModalComponent() {
                 }
                 getOptionLabel={(option) => option.nama}
                 onChange={provinsiChangeHandler}
-
                 renderInput={(params) => {
                   return (
                     <TextField
@@ -169,7 +222,9 @@ function ModalComponent() {
                 }}
               />
               <FormControl fullWidth>
-                <InputLabel id='kota_kabupaten'>Kota/Kabupaten</InputLabel>
+                <InputLabel id="kota_kabupaten">
+                  Kota/Kabupaten
+                </InputLabel>
                 <Select
                   labelId="kota_kabupaten"
                   id="kota_kabupaten"
@@ -191,7 +246,7 @@ function ModalComponent() {
                 </Select>
               </FormControl>
               <FormControl fullWidth>
-                <InputLabel id='kecamatan'>Kecamatan</InputLabel>
+                <InputLabel id="kecamatan">Kecamatan</InputLabel>
                 <Select
                   labelId="kecamatan"
                   id="kecamatan"
@@ -200,7 +255,7 @@ function ModalComponent() {
                   onChange={kecamatanChangeHandler}
                   value={addEmployeeValue.kecamatan}
                   required
-                // MenuProps={MenuProps}
+                  // MenuProps={MenuProps}
                 >
                   {kecamatan.map((data) => (
                     <MenuItem
@@ -214,7 +269,7 @@ function ModalComponent() {
                 </Select>
               </FormControl>
               <FormControl fullWidth>
-                <InputLabel id='kelurahan'>Kelurahan</InputLabel>
+                <InputLabel id="kelurahan">Kelurahan</InputLabel>
                 <Select
                   labelId="kelurahan"
                   id="kelurahan"
@@ -223,7 +278,7 @@ function ModalComponent() {
                   onChange={kelurahanChangeHandler}
                   value={addEmployeeValue.kelurahan}
                   required
-                // MenuProps={MenuProps}
+                  // MenuProps={MenuProps}
                 >
                   {kelurahan.map((data) => (
                     <MenuItem
@@ -240,7 +295,7 @@ function ModalComponent() {
                 variant="outlined"
                 disableRipple
                 cn="edit"
-                type='submit'
+                type="submit"
               >
                 Submit
               </OutlinedButton>
@@ -253,10 +308,12 @@ function ModalComponent() {
       return (
         <>
           <Modal open={isModal} onClose={closeModal}>
-            <ModalContainer>
-              <TitleWrapper>
-                Edit Data Employee
-              </TitleWrapper>
+            <ModalContainer
+              className="editModal"
+              onSubmit={editEmployeeHandler}
+              autoComplete="off"
+            >
+              <TitleWrapper>Edit Data Employee</TitleWrapper>
               <TextField
                 fullWidth
                 id="nama"
@@ -267,7 +324,7 @@ function ModalComponent() {
                 style={{ marginBottom: '30px' }}
               />
               <Autocomplete
-                id='provinsi'
+                id="provinsi"
                 fullWidth
                 style={{ marginBottom: '30px' }}
                 options={provinsi}
@@ -288,7 +345,9 @@ function ModalComponent() {
                 }}
               />
               <FormControl fullWidth>
-                <InputLabel id='kota_kabupaten'>Kota/Kabupaten</InputLabel>
+                <InputLabel id="kota_kabupaten">
+                  Kota/Kabupaten
+                </InputLabel>
                 <Select
                   labelId="kota_kabupaten"
                   id="kota_kabupaten"
@@ -296,9 +355,8 @@ function ModalComponent() {
                   input={<OutlinedInput label="Kota/Kabupaten" />}
                   onChange={editKota_kabupatenChangeHandler}
                   defaultValue=""
-                // value={edit?.kabupaten?.length ? edit?.kabupaten : ''}
-                // MenuProps={MenuProps}
-
+                  // value={edit?.kabupaten?.length ? edit?.kabupaten : ''}
+                  // MenuProps={MenuProps}
                 >
                   {kota_kabupaten.map((data) => (
                     <MenuItem
@@ -312,7 +370,7 @@ function ModalComponent() {
                 </Select>
               </FormControl>
               <FormControl fullWidth>
-                <InputLabel id='kecamatan'>Kecamatan</InputLabel>
+                <InputLabel id="kecamatan">Kecamatan</InputLabel>
                 <Select
                   labelId="kecamatan"
                   id="kecamatan"
@@ -320,8 +378,7 @@ function ModalComponent() {
                   input={<OutlinedInput label="kecamatan" />}
                   onChange={editKecamatanChangeHandler}
                   defaultValue=""
-                // value={""}
-
+                  // value={""}
                 >
                   {kecamatan.map((data) => (
                     <MenuItem
@@ -335,7 +392,7 @@ function ModalComponent() {
                 </Select>
               </FormControl>
               <FormControl fullWidth>
-                <InputLabel id='kelurahan'>Kelurahan</InputLabel>
+                <InputLabel id="kelurahan">Kelurahan</InputLabel>
                 <Select
                   labelId="kelurahan"
                   id="kelurahan"
@@ -343,8 +400,8 @@ function ModalComponent() {
                   input={<OutlinedInput label="kelurahan" />}
                   onChange={editKelurahanChangeHandler}
                   defaultValue=""
-                // value={""}
-                // MenuProps={MenuProps}
+                  // value={""}
+                  // MenuProps={MenuProps}
                 >
                   {kelurahan.map((data) => (
                     <MenuItem
@@ -361,22 +418,14 @@ function ModalComponent() {
                 variant="outlined"
                 disableRipple
                 cn="edit"
-                onClick={editEmployeeHandler}
+                type="submit"
               >
                 Save
               </OutlinedButton>
             </ModalContainer>
           </Modal>
         </>
-
       );
-
-    case 'delateEmployee':
-      return (
-        <Modal>
-          ini delete modal
-        </Modal>
-      )
     default:
       <></>;
   }

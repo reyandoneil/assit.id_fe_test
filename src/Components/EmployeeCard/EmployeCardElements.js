@@ -41,8 +41,8 @@ export const ProfileWrapper = styled('div')`
 `;
 
 export const Avatar = styled('img')`
-  height: 100px;
-  width: 100px;
+  height: 150px;
+  width: 150px;
   margin-bottom: 10px;
   border-radius: 100px;
   background-color: lightyellow;

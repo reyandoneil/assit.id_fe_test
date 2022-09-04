@@ -8,28 +8,56 @@ import {
   Name,
   OutlinedButton,
   Title,
-  Content
+  Content,
 } from './EmployeCardElements';
 import { useDispatch } from 'react-redux';
-import { modal, modalName, dataEdit, deleteEmployee } from '../../Store/action/employeAction';
-import {firstCapital} from '../../helper'
+import {
+  modal,
+  modalName,
+  dataEdit,
+} from '../../Store/action/employeAction';
+import { firstCapital } from '../../helper';
 
-function EmployeeCard({ nama, id, provinsi, kabupaten, kecamatan, kelurahan }) {
+function EmployeeCard({
+  nama,
+  id,
+  provinsi,
+  kabupaten,
+  kecamatan,
+  kelurahan,
+}) {
   const dispatch = useDispatch();
-  const imageSource = `https://avatars.dicebear.com/api/personas/${id}.svg`
+  const imageSource = `https://avatars.dicebear.com/api/personas/${id}.svg`;
   const deleteEmployeeHandler = (e) => {
-    e.preventDefault();
-    dispatch(deleteEmployee(id))
+  
+    dispatch(
+      dataEdit({
+        nama,
+        id,
+        provinsi,
+        kabupaten,
+        kecamatan,
+        kelurahan,
+      })
+    );
+    dispatch(modal(true));
+    dispatch(modalName('delateEmployee'));
   };
   const editEmployee = () => {
-    dispatch(dataEdit({
-      nama, id, provinsi, kabupaten, kecamatan, kelurahan
-    }))
+    dispatch(
+      dataEdit({
+        nama,
+        id,
+        provinsi,
+        kabupaten,
+        kecamatan,
+        kelurahan,
+      })
+    );
     dispatch(modal(true));
     dispatch(modalName('editEmployee'));
   };
   return (
-
     <CustomCard>
       <TopContent>
         <TopButtonWrapper>
@@ -51,9 +79,7 @@ function EmployeeCard({ nama, id, provinsi, kabupaten, kecamatan, kelurahan }) {
           </OutlinedButton>
         </TopButtonWrapper>
         <ProfileWrapper>
-          <Avatar
-            src={imageSource}
-          />
+          <Avatar src={imageSource} />
           <Name>{firstCapital(nama)}</Name>
         </ProfileWrapper>
       </TopContent>

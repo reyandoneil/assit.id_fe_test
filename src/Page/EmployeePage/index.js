@@ -16,7 +16,7 @@ function EmployeePage() {
   );
 
   const reverseDataEmployee = [...dataEmployee].reverse()
-  console.log(typeof (reverseDataEmployee), reverseDataEmployee);
+
 
   const isLoading = useSelector(
     (state) => state?.employeeReducer?.isLoading
