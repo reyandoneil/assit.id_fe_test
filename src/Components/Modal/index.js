@@ -66,6 +66,7 @@ function ModalComponent() {
   const [kota, setKota] = useState(0);
 
   const [edit, setEdit] = useState();
+  const [isDisable, setisDisable] = useState(true);
 
   useEffect(() => {
     setEdit(dataEdit);
@@ -115,11 +116,13 @@ function ModalComponent() {
   const editProvinsiChangeHandler = (e, value) => {
     setKota(value.id);
     setEdit({ ...edit, provinsi: value.nama });
+    setisDisable(false);
   };
 
   const editKota_kabupatenChangeHandler = (e, value) => {
     dispatch(getKecamatan(value.props.id));
     setEdit({ ...edit, kabupaten: value.props.value });
+    setisDisable(false);
   };
 
   const editKecamatanChangeHandler = (e, value) => {
@@ -134,6 +137,7 @@ function ModalComponent() {
   const editOnChangeHandler = (e) => {
     const { value } = e.target;
     setEdit({ ...edit, nama: value });
+    setisDisable(false);
   };
 
   const closeModal = () => {
@@ -152,6 +156,7 @@ function ModalComponent() {
     e.preventDefault();
     dispatch(updateEmployee(edit));
     dispatch(modal(false));
+    setisDisable(true);
   };
 
   const delateEmployeeById = (e) => {
@@ -348,84 +353,89 @@ function ModalComponent() {
                   );
                 }}
               />
-              <FormControl fullWidth>
-                <InputLabel id="kota_kabupaten">
-                  Kota/Kabupaten
-                </InputLabel>
-                <Select
-                  labelId="kota_kabupaten"
-                  id="kota_kabupaten"
-                  style={{ marginBottom: '30px' }}
-                  input={<OutlinedInput label="Kota/Kabupaten" />}
-                  onChange={editKota_kabupatenChangeHandler}
-                  defaultValue=""
-                  required
-                  // value={edit?.kabupaten?.length ? edit?.kabupaten : ''}
-                  // MenuProps={MenuProps}
-                >
-                  {kota_kabupaten.map((data) => (
-                    <MenuItem
-                      key={data.id}
-                      value={data.nama}
-                      id={data.id}
+              {!isDisable && (
+                <>
+                  <FormControl fullWidth>
+                    <InputLabel id="kota_kabupaten">
+                      Kota/Kabupaten
+                    </InputLabel>
+                    <Select
+                      labelId="kota_kabupaten"
+                      id="kota_kabupaten"
+                      style={{ marginBottom: '30px' }}
+                      input={<OutlinedInput label="Kota/Kabupaten" />}
+                      onChange={editKota_kabupatenChangeHandler}
+                      defaultValue=""
+                      required
+                      // value={edit?.kabupaten?.length ? edit?.kabupaten : ''}
+                      // MenuProps={MenuProps}
                     >
-                      {data.nama}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <FormControl fullWidth>
-                <InputLabel id="kecamatan">Kecamatan</InputLabel>
-                <Select
-                  labelId="kecamatan"
-                  id="kecamatan"
-                  style={{ marginBottom: '30px' }}
-                  input={<OutlinedInput label="kecamatan" />}
-                  onChange={editKecamatanChangeHandler}
-                  defaultValue=""
-                  required
-                  // value={""}
-                >
-                  {kecamatan.map((data) => (
-                    <MenuItem
-                      key={data.id}
-                      value={data.nama}
-                      id={data.id}
+                      {kota_kabupaten.map((data) => (
+                        <MenuItem
+                          key={data.id}
+                          value={data.nama}
+                          id={data.id}
+                        >
+                          {data.nama}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  <FormControl fullWidth>
+                    <InputLabel id="kecamatan">Kecamatan</InputLabel>
+                    <Select
+                      labelId="kecamatan"
+                      id="kecamatan"
+                      style={{ marginBottom: '30px' }}
+                      input={<OutlinedInput label="kecamatan" />}
+                      onChange={editKecamatanChangeHandler}
+                      defaultValue=""
+                      required
+                      // value={""}
                     >
-                      {data.nama}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <FormControl fullWidth>
-                <InputLabel id="kelurahan">Kelurahan</InputLabel>
-                <Select
-                  labelId="kelurahan"
-                  id="kelurahan"
-                  style={{ marginBottom: '30px' }}
-                  input={<OutlinedInput label="kelurahan" />}
-                  onChange={editKelurahanChangeHandler}
-                  defaultValue=""
-                  required
-                  // value={""}
-                  // MenuProps={MenuProps}
-                >
-                  {kelurahan.map((data) => (
-                    <MenuItem
-                      key={data.id}
-                      value={data.nama}
-                      id={data.id}
+                      {kecamatan.map((data) => (
+                        <MenuItem
+                          key={data.id}
+                          value={data.nama}
+                          id={data.id}
+                        >
+                          {data.nama}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  <FormControl fullWidth>
+                    <InputLabel id="kelurahan">Kelurahan</InputLabel>
+                    <Select
+                      labelId="kelurahan"
+                      id="kelurahan"
+                      style={{ marginBottom: '30px' }}
+                      input={<OutlinedInput label="kelurahan" />}
+                      onChange={editKelurahanChangeHandler}
+                      defaultValue=""
+                      required
+                      // value={""}
+                      // MenuProps={MenuProps}
                     >
-                      {data.nama}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+                      {kelurahan.map((data) => (
+                        <MenuItem
+                          key={data.id}
+                          value={data.nama}
+                          id={data.id}
+                        >
+                          {data.nama}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </>
+              )}
               <OutlinedButton
                 variant="outlined"
                 disableRipple
                 cn="edit"
                 type="submit"
+                disabled={isDisable}
               >
                 Save
               </OutlinedButton>
