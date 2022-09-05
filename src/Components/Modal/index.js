@@ -323,12 +323,14 @@ function ModalComponent() {
                 variant="outlined"
                 onChange={editOnChangeHandler}
                 style={{ marginBottom: '30px' }}
+                required
               />
               <Autocomplete
                 id="provinsi"
                 fullWidth
                 style={{ marginBottom: '30px' }}
                 options={provinsi}
+                required={true}
                 defaultValue={{ nama: dataEdit.provinsi }}
                 isOptionEqualToValue={(option, value) =>
                   option.nama === value.nama
@@ -341,6 +343,7 @@ function ModalComponent() {
                       {...params}
                       label="provinsi"
                       variant="outlined"
+                      required
                     />
                   );
                 }}
@@ -356,6 +359,7 @@ function ModalComponent() {
                   input={<OutlinedInput label="Kota/Kabupaten" />}
                   onChange={editKota_kabupatenChangeHandler}
                   defaultValue=""
+                  required
                   // value={edit?.kabupaten?.length ? edit?.kabupaten : ''}
                   // MenuProps={MenuProps}
                 >
@@ -379,6 +383,7 @@ function ModalComponent() {
                   input={<OutlinedInput label="kecamatan" />}
                   onChange={editKecamatanChangeHandler}
                   defaultValue=""
+                  required
                   // value={""}
                 >
                   {kecamatan.map((data) => (
@@ -401,6 +406,7 @@ function ModalComponent() {
                   input={<OutlinedInput label="kelurahan" />}
                   onChange={editKelurahanChangeHandler}
                   defaultValue=""
+                  required
                   // value={""}
                   // MenuProps={MenuProps}
                 >
